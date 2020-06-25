@@ -1,3 +1,4 @@
+//liest file eyapmle.log ein und postet alle paar seknden, Zeilen werden mit reges in Json-Objekt ggeparst
 const axios = require('axios');
 const fs = require('fs');
 const date = require('date-and-time');
@@ -14,7 +15,9 @@ postLogLine(0);
 function postLogLine(lineNr) {
     let logEntry = clf2JSON(logLines[lineNr]);
     // An die Queue posten -- wir ignorieren Fehlermeldungen
-    axios.post('http://127.0.0.1:3000/queue/', { msg: logEntry }).then();
+   // axios.post('http://127.0.0.1:3000/queue/push', { msg: logEntry }).then();
+    axios.post('http://127.0.0.1:3000/pubsub/publish', { msg: logEntry }).then();
+
 
     // Solange wir noch Zeilen haben: mit Delay erneut aufrufen
     if (lineNr < logLines.length - 1) {
